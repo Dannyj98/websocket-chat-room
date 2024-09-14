@@ -31,7 +31,7 @@ const handleSendMessage = () => {
       <ChatView :allMessage="allMessage" />
     </div>
     <div class="chat-input">
-      <TextBox v-model="message" />
+      <TextBox v-model="message" @enter="handleSendMessage" />
       <SendButton @send="handleSendMessage" />
     </div>
   </div>

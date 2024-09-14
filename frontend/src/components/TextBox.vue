@@ -2,7 +2,7 @@
 defineProps({
   modelValue: String
 })
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'enter'])
 
 // Function to handle input event and emit the updated value
 const handleInput = (event: Event) => {
@@ -14,6 +14,7 @@ const handleInput = (event: Event) => {
 <template>
   <input
     @input="handleInput"
+    @keyup.enter="emit('enter')"
     :value="modelValue"
     type="text"
     name="message"
