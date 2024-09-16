@@ -3,9 +3,19 @@ import { ref } from 'vue'
 import TextBox from '@/components/TextBox.vue'
 import SendButton from '@/components/SendButton.vue'
 import ChatView from '@/components/ChatView.vue'
+import { useWebSocket } from '@/composables/websockets'
 
+import Welcome from '@/components/Welcome.vue'
+
+const { messages, sendMessage, setName } = useWebSocket('ws://localhost:3000')
 const message = ref<string>('')
-const allMessage = ref<Message[]>([])
+const showWelcome = ref<boolean>(true)
+
+const handleEnterChat = (name: string) => {
+  // Connect to the WebSocket server
+  setName(name)
+  showWelcome.value = false
+}
 
 const handleSendMessage = () => {
   // Check there is a message before sending
@@ -13,12 +23,7 @@ const handleSendMessage = () => {
     return
   }
   // Send the message
-  console.log(message.value)
-  allMessage.value.push({
-    id: allMessage.value.length + 1,
-    text: message.value,
-    timestamp: new Date().toISOString()
-  })
+  sendMessage(message.value)
 
   // Clear the message after sending
   message.value = ''
@@ -26,9 +31,10 @@ const handleSendMessage = () => {
 </script>
 
 <template>
+  <Welcome v-if="showWelcome" @enter-chat="handleEnterChat" />
   <div class="chat-container">
     <div class="chat-messages">
-      <ChatView :allMessage="allMessage" />
+      <ChatView :allMessage="messages" />
     </div>
     <div class="chat-input">
       <TextBox v-model="message" @enter="handleSendMessage" />
