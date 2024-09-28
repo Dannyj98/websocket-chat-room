@@ -1,8 +1,9 @@
 declare global {
   interface Message {
-    id: number
+    id: string
     text: string
     createdAt: string
+    type: 'message' | 'entered_room' | 'left_room'
   }
 }
 

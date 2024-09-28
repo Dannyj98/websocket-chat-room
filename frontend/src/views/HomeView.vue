@@ -7,13 +7,14 @@ import { useWebSocket } from '@/composables/websockets'
 
 import Welcome from '@/components/Welcome.vue'
 
-const { messages, sendMessage, setName } = useWebSocket('ws://localhost:3000')
+const { messages, sendMessage, setNameAndConnect, uuid } = useWebSocket('ws://localhost:3000')
 const message = ref<string>('')
 const showWelcome = ref<boolean>(true)
 
 const handleEnterChat = (name: string) => {
   // Connect to the WebSocket server
-  setName(name)
+  setNameAndConnect(name)
+
   showWelcome.value = false
 }
 
@@ -34,7 +35,7 @@ const handleSendMessage = () => {
   <Welcome v-if="showWelcome" @enter-chat="handleEnterChat" />
   <div class="chat-container">
     <div class="chat-messages">
-      <ChatView :allMessage="messages" />
+      <ChatView :allMessage="messages" :myId="uuid" />
     </div>
     <div class="chat-input">
       <TextBox v-model="message" @enter="handleSendMessage" />

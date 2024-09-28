@@ -42,6 +42,7 @@ wss.on("connection", (ws: WebSocket, request: Request) => {
     // Convert message to string
     const msg = message.toString()
     let parsedMessage
+    console.log("Received message:", msg)
     try {
       parsedMessage = JSON.parse(msg)
     } catch (error) {
